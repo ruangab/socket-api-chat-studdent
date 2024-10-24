@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1>
+        Olá mundos
+    </h1>
+    <form action="" id="form-msg">
+        <span>
+            Mensagem
+        </span>
+        <input type="text" id="msg">
+        <button type="submit">Enviar</button>
+
+    </form>
+
+    <div>
+        <h4>Mensagens</h4>
+        <div id="mensagens">
+
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        $("#form-msg").on("submit", function(e){
+            e.preventDefault();
+            let msg = $("#msg").val();
+            if(msg != "" || msg != null){
+                socket.emit("chat message", msg);
+                $("#msg").val("");
+            }
+
+            socket.on("chat message", function(msg){
+                let text = '<p>'+msg+'</p>';
+                console.log(text);
+                $("#mensagens").append(text);
+                text = "";
+            });
+        });
+    </script>
+</body>
+
+</html>
